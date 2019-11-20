@@ -1,9 +1,233 @@
 /**
  * All provided echarts options.
  */
-
 import Graphic from 'echarts/lib/util/graphic'
 
+function paint (result) {
+  var nodes = [];
+  var links = [];
+  var categories = [];
+  var category_names = [];
+  result.nodes.forEach(function (node) {
+    if (categories.indexOf(node.category) < 0) {
+      category_names.push(node.category);
+      categories.push({
+        name: node.category
+      });
+    }
+    node.symbol = 'circle';
+    node.symbolSize = node.value * 1.2;
+    node.x = null;
+    node.y = null;
+    node.itemStyle = null;
+    node.label = {
+      normal: {
+         show: true,
+         position: 'right'
+       }
+    };
+    nodes.push(node);
+  });
+  result.links.forEach(function (edge) {
+    links.push(edge);
+  });
+  return {'nodes': nodes,"links": links,"categories": categories}
+}
+
+var ChartData = {
+  nodes_relations: {
+    "nodes": [
+        {
+            "id": 0,
+            "name": "卷积神经网络",
+            "value": 23,
+            "category": "卷积神经网络"
+        },
+        {
+            "id": 1,
+            "name": "深度学习",
+            "value": 25,
+            "category": "深度学习"
+        },
+        {
+            "id": 2,
+            "name": "神经网络",
+            "value": 17,
+            "category": "神经网络"
+        },
+        {
+            "id": 3,
+            "name": "机器学习",
+            "value": 33,
+            "category": "机器学习"
+        },
+        {
+            "id": 4,
+            "name": "遗传算法",
+            "value": 18,
+            "category": "遗传算法"
+        },
+        {
+            "id": 5,
+            "name": "特征提取",
+            "value": 17,
+            "category": "特征提取"
+        },
+        {
+            "id": 6,
+            "name": "人工智能",
+            "value": 20,
+            "category": "人工智能"
+        },
+        {
+            "id": 7,
+            "name": "文本分类",
+            "value": 12,
+            "category": "文本分类"
+        },
+        {
+            "id": 8,
+            "name": "云计算",
+            "value": 19,
+            "category": "云计算"
+        },
+        {
+            "id": 9,
+            "name": "监督学习",
+            "value": 18,
+            "category": "监督学习"
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 0,
+            "count": 345
+        },
+        {
+            "source": 0,
+            "target": 1,
+            "count": 118
+        },
+        {
+            "source": 0,
+            "target": 2,
+            "count": 13
+        },
+        {
+            "source": 1,
+            "target": 1,
+            "count": 457
+        },
+        {
+            "source": 1,
+            "target": 2,
+            "count": 36
+        },
+        {
+            "source": 1,
+            "target": 3,
+            "count": 31
+        },
+        {
+            "source": 1,
+            "target": 9,
+            "count": 23
+        },
+        {
+            "source": 2,
+            "target": 4,
+            "count": 323
+        },
+        {
+            "source": 2,
+            "target": 5,
+            "count": 65
+        },
+        {
+            "source": 2,
+            "target": 6,
+            "count": 8
+        },
+        {
+            "source": 3,
+            "target": 3,
+            "count": 3069
+        },
+        {
+            "source": 3,
+            "target": 4,
+            "count": 71
+        },
+        {
+            "source": 3,
+            "target": 5,
+            "count": 198
+        },
+        {
+            "source": 3,
+            "target": 6,
+            "count": 5
+        },
+        {
+            "source": 3,
+            "target": 7,
+            "count": 159
+        },
+        {
+            "source": 3,
+            "target": 9,
+            "count": 15
+        },
+        {
+            "source": 4,
+            "target": 4,
+            "count": 4314
+        },
+        {
+            "source": 4,
+            "target": 5,
+            "count": 23
+        },
+        {
+            "source": 5,
+            "target": 5,
+            "count": 2501
+        },
+        {
+            "source": 5,
+            "target": 7,
+            "count": 32
+        },
+        {
+            "source": 6,
+            "target": 7,
+            "count": 13
+        },
+        {
+            "source": 6,
+            "target": 8,
+            "count": 55
+        },
+        {
+            "source": 6,
+            "target": 9,
+            "count": 21
+        }
+    ]
+  },
+  'topics': [
+    '1.全球开启裁员大幕',
+    '2.李克强召开主持国务院会议',
+    '3.《2019年深入实施国家知识产权战略》'
+  ],
+  'exports': [
+    '1.知识产权概念端午前提升',
+    '2.国务院知识产权战略实施工作',
+    '3.我国将加强知识产权行政和司法保护'
+  ]
+}
+var kg_data = paint(ChartData.nodes_relations);
 const ChartLib = {
   '风险走势&折线图': {
     option: {
@@ -1182,6 +1406,44 @@ const ChartLib = {
       });
     },
   },
+  '知识图谱图': {
+    option: {
+      color: ['#F35853', '#FED756', '#4BF6E6', '#FFD700', '#9CD226','#d3758f','#dcc392','#2e4783',
+      '#82b6e9','#ff6347','#a092f1','#0a915d','#7d4627',
+      '#6699FF','#ff6666','#3cb371'],
+      backgroundColor: '',
+      tooltip: {
+        formatter: function (params) {
+          return params.data.name;
+        }
+      },
+      series: [{
+        type: 'graph',
+        layout: 'force',
+        data: kg_data['nodes'],
+        links: kg_data['links'],
+        categories: kg_data['categories'],
+        lineStyle: {
+          normal: {
+            color: 'source',
+            width: 2,
+            curveness: 0.2
+          }
+        },
+        force: {
+          repulsion: 400,
+          layoutAnimation: false
+        },
+        roam: true,
+        focusNodeAdjacency: true,
+        animationDuration: 500
+      }],
+      textStyle: {
+        fontFamily: '微软雅黑',
+        fontSize: 18
+      }
+    }
+  },
 };
 
-export { ChartLib };
+export {ChartLib, ChartData};

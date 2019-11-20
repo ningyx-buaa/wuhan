@@ -1,16 +1,41 @@
 <template>
   <div id="app" class="real-body">
     <div class="con-box l-t-box" @click="goto">
-      <Echarts theme="ring" :option="options.left_up.option" className="chart" ></Echarts>
+      <!-- <Echarts theme="ring" :option="options.left_up.option" className="chart" ></Echarts> -->
+      <center>
+        <font size="7" color="white">综合选题</font>
+      </center>
+      <ul>
+        <li v-for="tab in left_up_list">
+            <center>
+                <font size="5" color="white">{{tab}}</font>
+            </center>
+        </li>
+      </ul>
     </div>
     <div class="con-box r-t-box" @click="goto">
-      <Echarts theme="ring" :option="options.right_up.option" className="chart" ></Echarts>
+      <!-- <Echarts theme="ring" :option="options.right_up.option" className="chart" ></Echarts> -->
+      <center>
+        <font size="7" color="white">专家观点</font>
+      </center>
+      <ul>
+        <li v-for="tab in right_up_list">
+            <center>
+                <font size="5" color="white">{{tab}}</font>
+            </center>
+        </li>
+      </ul>
     </div>
     <div class="con-box l-b-box" @click="goto">
       <Echarts theme="ring" :option="options.left_down.option" className="chart" ></Echarts>
     </div>
     <div class="con-box r-b-box" @click="goto">
-      <Echarts theme="ring" :option="options.right_down.option" className="chart" ></Echarts>
+      <center>
+        <font size="7" color="white">知识图谱</font>
+      </center>
+      <div class="chart">
+        <Echarts theme="ring" :option="options.right_down.option" className="chart" ></Echarts>
+      </div>
     </div>
     <div class="center-box">
       <div class="chart" id="echarts-globe"></div>
@@ -34,7 +59,7 @@
 
   import Common from 'components/Common.js'
 
-  import { ChartLib } from './ChartLib.js'
+  import {ChartLib, ChartData} from './ChartLib.js'
 
   import BaseTexture from 'components/texture/Base.js'
   import HeightTexture from 'components/texture/Height.js'
@@ -66,11 +91,13 @@
     data () {
       return {
         Common: Common,
-        jumpto: 'page6',
+        jumpto: 'ring',
         intervalID: null,
         intervalRotate: null,
         nowCityIndex: 0,
         rotateCities: [],
+        left_up_list: [],
+        right_up_list: [],
         options: {
           left_up: { option: {}, update: () => { return; } },
           right_up: { option: {}, update: () => { return; } },
@@ -184,6 +211,10 @@
     },
     mounted () {
       this.echartsGlobe();
+      this.left_up_list = ChartData['topics'];
+      this.right_up_list = ChartData['exports'];
+      this.options.right_down.option = ChartLib['知识图谱图'].option;
+      this.options.left_down.option = ChartLib['风险走势&折线图'].option;
     },
     created () {
       this.initOptions();
@@ -323,6 +354,10 @@
     &.r-b-box
       right: 2.5rem
       bottom: 2.5rem
+      .chart
+        bottom: 100rem
+        width: 100%
+        height: 80%
   .center-box
     position: absolute
     left: 0rem
