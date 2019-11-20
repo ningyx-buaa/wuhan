@@ -6,11 +6,9 @@
         <font size="7" color="white">综合选题</font>
       </center>
       <ul>
-        <li v-for="tab in left_up_list">
-            <center>
-                <font size="5" color="white">{{tab}}</font>
-            </center>
-        </li>
+          <li v-bind:key=tab v-for="tab in left_up_list">
+            <font size="5" color="white">{{tab}}</font>
+          </li>
       </ul>
     </div>
     <div class="con-box r-t-box" @click="goto">
@@ -19,14 +17,15 @@
         <font size="7" color="white">专家观点</font>
       </center>
       <ul>
-        <li v-for="tab in right_up_list">
-            <center>
-                <font size="5" color="white">{{tab}}</font>
-            </center>
-        </li>
+          <li v-bind:key=tab v-for="tab in right_up_list">
+            <font size="5" color="white">{{tab}}</font>
+          </li>
       </ul>
     </div>
     <div class="con-box l-b-box" @click="goto">
+      <center>
+        <font size="7" color="white">折线图</font>
+      </center>
       <Echarts theme="ring" :option="options.left_down.option" className="chart" ></Echarts>
     </div>
     <div class="con-box r-b-box" @click="goto">
@@ -94,6 +93,8 @@
         jumpto: 'ring',
         intervalID: null,
         intervalRotate: null,
+        region: null,
+        regions: null,
         nowCityIndex: 0,
         rotateCities: [],
         left_up_list: [],
@@ -206,15 +207,76 @@
             data: [],
           }]
         },
-        globe: null,
+        globe_new_option: {
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          geo: {
+              type: 'map',
+              map: 'world',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              boundingCoords: [[-180, 90], [180, -90]],
+              // silent: true,
+              itemStyle: {
+                  normal: {
+                      borderColor: '#000'
+                  }
+              },
+              label: {
+                  normal: {
+                      textStyle: {
+                          color: '#fff',
+                          fontSize: 40
+                      }
+                  }
+              }
+          },
+          globe: {
+                baseTexture: this.globe,
+                heightTexture: '/asset/get/s/data-1491889019097-rJQYikcpl.jpg',
+                displacementScale: 0.1,
+                shading: 'realistic',
+                realisticMaterial: {
+                    roughness: 0.8,
+                    metalness: 0
+                },
+                postEffect: {
+                    enable: true
+                },
+                temporalSuperSampling: {
+                    enable: true
+                },
+                light: {
+                    ambient: {
+                        intensity: 0
+                    },
+                    main: {
+                        intensity: 2,
+                        shadow: true
+                    },
+                    ambientCubemap: {
+                        texture: '/asset/get/s/data-1491837984109-r1u7NmY6e.hdr',
+                        exposure: 1,
+                        diffuseIntensity: 0.2
+                    }
+                },
+                viewControl: {
+                    animationDurationUpdate: 1000,
+                    animationEasingUpdate: 'cubicInOut',
+                    targetCoord: [116.46, 39.92],
+                    autoRotate: false
+                }
+            }
+        },
       }
     },
     mounted () {
       this.echartsGlobe();
       this.left_up_list = ChartData['topics'];
       this.right_up_list = ChartData['exports'];
-      this.options.right_down.option = ChartLib['知识图谱图'].option;
-      this.options.left_down.option = ChartLib['风险走势&折线图'].option;
+      this.options.right_down.option = ChartLib['河流图'].option;
+      this.options.left_down.option = ChartLib['折线图'].option;
     },
     created () {
       this.initOptions();
@@ -262,11 +324,39 @@
       },
       echartsGlobe () {
         this.globe = echarts.init(document.getElementById('echarts-globe'));
-        this.globe.setOption(this.globe_t_option);
-        // this.globe.on('click', function (params) {
-        //   console.log(params);
-        //   console.log(new Error().stack);
-        // });
+        this.globe.setOption(this.globe_new_option);
+        this.regions = this.globe.getModel().getComponent('geo').coordinateSystem.regions;
+        this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
+      },
+      around () {
+        this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
+        this.globe.setOption({
+            title: {
+                left: 'center',
+                top: 'center',
+                text: this.region.name,
+                textStyle: {
+                    fontSize: 40
+                }
+            },
+            globe: {
+                viewControl: {
+                    targetCoord: this.region.center
+                }
+            }
+        });
+        this.globe.setOption({
+            geo: {
+                regions: [{
+                    name: this.region.name,
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#444'
+                        }
+                    }
+                }]
+            }
+        });
       },
       update_globe_option () {
         this.globe_t_option.globe.displacementScale = 0.1249;
