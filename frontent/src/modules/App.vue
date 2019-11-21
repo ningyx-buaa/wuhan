@@ -54,24 +54,27 @@
   import Echarts from 'vue-echarts-v3/src/full.js'
 
   import echarts from 'echarts'
-  require('echarts-gl')
+  require('echarts-gl');
+
+  import "echarts/map/js/world.js";
 
   import Common from 'components/Common.js'
 
   import {ChartLib, ChartData} from './ChartLib.js'
 
   import BaseTexture from 'components/texture/Base.js'
-  import HeightTexture from 'components/texture/Height.js'
+  // import HeightTexture from 'components/texture/Height.js'
   import BlendTexture from 'components/texture/Blend.js'
   // import OverlayTexture from 'components/texture/Overlay.js'
+  // import ambientTexture from '../assets/get/s/data-1491837984109-r1u7NmY6e.hdr'
 
   const baseTexture = new Image();
   baseTexture.src = BaseTexture.texture;
   // baseTexture.crossOrigin = 'anonymous';
   // baseTexture.src = require('../../assets/map-rc/data-1491890179041-Hkj-elqpe.jpg');
 
-  const heightTexture = new Image();
-  heightTexture.src = HeightTexture.texture;
+  // const heightTexture = new Image();
+  // heightTexture.src = HeightTexture.texture;
   // heightTexture.crossOrigin = 'anonymous';
   // heightTexture.src = require('../../assets/map-rc/data-1491889019097-rJQYikcpl.jpg');
 
@@ -85,6 +88,14 @@
   // overlayTexture.src = GlobeTexture.overlayTexture;
   // // overlayTexture.crossOrigin = 'anonymous';
   // // overlayTexture.src = require('../../assets/map-rc/data-1491890092270-BJEhJg96l.png')
+
+  const heightTexture = new Image();
+  heightTexture.src = require('../assets/get/s/data-1491889019097-rJQYikcpl.jpg');
+
+  // const ambientTexture_src = require('../assets/get/s/data-1491837984109-r1u7NmY6e.hdr');
+
+  // import jpg from '../assets/get/s/data-1491889019097-rJQYikcpl.jpg'
+  // import hdr from '../assets/get/s/data-1491837984109-r1u7NmY6e.hdr'
 
   export default {
     data () {
@@ -207,68 +218,68 @@
             data: [],
           }]
         },
-        globe_new_option: {
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          geo: {
-              type: 'map',
-              map: 'world',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              boundingCoords: [[-180, 90], [180, -90]],
-              // silent: true,
-              itemStyle: {
-                  normal: {
-                      borderColor: '#000'
-                  }
-              },
-              label: {
-                  normal: {
-                      textStyle: {
-                          color: '#fff',
-                          fontSize: 40
-                      }
-                  }
-              }
-          },
-          globe: {
-                baseTexture: this.globe,
-                heightTexture: '/asset/get/s/data-1491889019097-rJQYikcpl.jpg',
-                displacementScale: 0.1,
-                shading: 'realistic',
-                realisticMaterial: {
-                    roughness: 0.8,
-                    metalness: 0
-                },
-                postEffect: {
-                    enable: true
-                },
-                temporalSuperSampling: {
-                    enable: true
-                },
-                light: {
-                    ambient: {
-                        intensity: 0
-                    },
-                    main: {
-                        intensity: 2,
-                        shadow: true
-                    },
-                    ambientCubemap: {
-                        texture: '/asset/get/s/data-1491837984109-r1u7NmY6e.hdr',
-                        exposure: 1,
-                        diffuseIntensity: 0.2
-                    }
-                },
-                viewControl: {
-                    animationDurationUpdate: 1000,
-                    animationEasingUpdate: 'cubicInOut',
-                    targetCoord: [116.46, 39.92],
-                    autoRotate: false
-                }
-            }
-        },
+        // globe_new_option: {
+        //   backgroundColor: 'rgba(0, 0, 0, 0)',
+        //   geo: {
+        //     type: 'map',
+        //     map: 'world',
+        //     top: 0,
+        //     left: 0,
+        //     right: 0,
+        //     bottom: 0,
+        //     boundingCoords: [[-180, 90], [180, -90]],
+        //     // silent: true,
+        //     itemStyle: {
+        //       normal: {
+        //         borderColor: '#000'
+        //       }
+        //     },
+        //     label: {
+        //       normal: {
+        //         textStyle: {
+        //           color: '#fff',
+        //           fontSize: 40
+        //         }
+        //       }
+        //     }
+        //   },
+        //   globe: {
+        //     baseTexture: this.globe,
+        //     heightTexture: heightTexture.src,
+        //     displacementScale: 0.1,
+        //     shading: 'realistic',
+        //     realisticMaterial: {
+        //       roughness: 0.8,
+        //       metalness: 0
+        //     },
+        //     postEffect: {
+        //       enable: true
+        //     },
+        //     temporalSuperSampling: {
+        //       enable: true
+        //     },
+        //     // light: {
+        //     //   ambient: {
+        //     //     intensity: 0
+        //     //   },
+        //     //   main: {
+        //     //     intensity: 2,
+        //     //     shadow: true
+        //     //   },
+        //     //   ambientCubemap: {
+        //     //     texture: '',
+        //     //     exposure: 1,
+        //     //     diffuseIntensity: 0.2
+        //     //   }
+        //     // },
+        //     viewControl: {
+        //       animationDurationUpdate: 1000,
+        //       animationEasingUpdate: 'cubicInOut',
+        //       targetCoord: [116.46, 39.92],
+        //       autoRotate: false
+        //     }
+        //   }
+        // },
       }
     },
     mounted () {
@@ -284,6 +295,13 @@
         this.initOptions()
       }, 100 * 1000);
 
+      setInterval(() => {
+        this.around();
+      }, 2000);
+      // setInterval(function() {
+      //   this.around();
+      // }, 2000);
+
       this.intervalGlobe = setInterval(() => {
         if (this.globe) {
           this.globe.clear();
@@ -298,8 +316,8 @@
         // alert(response.data.page0.to)
         // eslint-disable-next-line no-unused-vars
         this.jumpto = response.data.page1.to;
-        let timer = setTimeout(function () { location.href = '../' + response.data.page1.to; } , response.data.page1.delay * 1000);
-      })
+        // let timer = setTimeout(function () { location.href = '../' + response.data.page1.to; } , response.data.page1.delay * 1000);
+      });
     },
     methods: {
       goto: function () {
@@ -323,39 +341,111 @@
         this.update_globe_option();
       },
       echartsGlobe () {
+        // 创建一个canvas类型的对象(mapChart)来作为地球的纹理(baseTexture)
+        let canvas = document.createElement('canvas');
+        let mapChart = echarts.init(canvas, null, {
+            width: 2048,
+            height: 1024
+        });
+
+        mapChart.setOption({
+            backgroundColor: '#999',
+            geo: {
+                type: 'map',
+                map: 'world',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                boundingCoords: [[-180, 90], [180, -90]],
+                // silent: true,
+                itemStyle: {
+                    normal: {
+                        borderColor: '#000'
+                    }
+                },
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 40
+                        }
+                    }
+                }
+            }
+        });
+
+        let globe_new_option = {
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          globe: {
+            baseTexture: mapChart,
+            heightTexture: heightTexture.src,
+            displacementScale: 0.1,
+            shading: 'realistic',
+            realisticMaterial: {
+              roughness: 0.8,
+              metalness: 0
+            },
+            postEffect: {
+              enable: true
+            },
+            temporalSuperSampling: {
+              enable: true
+            },
+            // light: {
+            //   ambient: {
+            //     intensity: 0
+            //   },
+            //   main: {
+            //     intensity: 2,
+            //     shadow: true
+            //   },
+            //   ambientCubemap: {
+            //     texture: '',
+            //     exposure: 1,
+            //     diffuseIntensity: 0.2
+            //   }
+            // },
+            viewControl: {
+              animationDurationUpdate: 1000,
+              animationEasingUpdate: 'cubicInOut',
+              targetCoord: [116.46, 39.92],
+              autoRotate: false
+            }
+          }
+        };
         this.globe = echarts.init(document.getElementById('echarts-globe'));
-        this.globe.setOption(this.globe_new_option);
-        this.regions = this.globe.getModel().getComponent('geo').coordinateSystem.regions;
-        this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
+        this.globe.setOption(globe_new_option);
+        this.regions = mapChart.getModel().getComponent('geo').coordinateSystem.regions;
       },
       around () {
         this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
         this.globe.setOption({
-            title: {
-                left: 'center',
-                top: 'center',
-                text: this.region.name,
-                textStyle: {
-                    fontSize: 40
-                }
-            },
-            globe: {
-                viewControl: {
-                    targetCoord: this.region.center
-                }
+          title: {
+            left: 'center',
+            top: 'center',
+            text: this.region.name,
+            textStyle: {
+              fontSize: 40
             }
+          },
+          globe: {
+            viewControl: {
+              targetCoord: this.region.center
+            }
+          }
         });
         this.globe.setOption({
-            geo: {
-                regions: [{
-                    name: this.region.name,
-                    itemStyle: {
-                        normal: {
-                            areaColor: '#444'
-                        }
-                    }
-                }]
-            }
+          geo: {
+            regions: [{
+              name: this.region.name,
+              itemStyle: {
+                normal: {
+                  areaColor: '#444'
+                }
+              }
+            }]
+          }
         });
       },
       update_globe_option () {

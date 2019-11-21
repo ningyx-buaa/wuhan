@@ -32,6 +32,7 @@ module.exports = {
     'semi': 0,
     'no-unused-vars': 'warn',
     'camelcase': 0,
+    'space-before-function-paven': 0
   },
   // globally enabled plugins
   'globals': {
