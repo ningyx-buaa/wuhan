@@ -1,16 +1,21 @@
 <template>
   <div id="app" class="real-body">
-    <div class="con-box l-t-box" @click="goto">
+    <a :href="'/' + jumpto" class="con-box l-t-box" @click="goto">
       <!-- <Echarts theme="ring" :option="options.left_up.option" className="chart" ></Echarts> -->
       <center>
         <font size="7" color="white">综合选题</font>
       </center>
       <ul>
-          <li v-bind:key=tab v-for="tab in left_up_list">
-            <font size="5" color="white">{{tab}}</font>
-          </li>
+        <font size="6" color="white">
+          <table v-bind:key=tab v-for="tab in left_up_list" border="1">
+            <tr>
+              <td>{{tab}}</td>
+              <td>{{left_up_list[tab]}}</td>
+            </tr>
+          </table>
+          </font>
       </ul>
-    </div>
+    </a>
     <div class="con-box r-t-box" @click="goto">
       <!-- <Echarts theme="ring" :option="options.right_up.option" className="chart" ></Echarts> -->
       <center>
@@ -18,19 +23,19 @@
       </center>
       <ul>
           <li v-bind:key=tab v-for="tab in right_up_list">
-            <font size="5" color="white">{{tab}}</font>
+            <font size="5" color="white">{{tab}}+{{right_up_list[tab]}}</font>
           </li>
       </ul>
     </div>
     <div class="con-box l-b-box" @click="goto">
       <center>
-        <font size="7" color="white">折线图</font>
+        <font size="7" color="white">热度趋势</font>
       </center>
       <Echarts theme="ring" :option="options.left_down.option" className="chart" ></Echarts>
     </div>
     <div class="con-box r-b-box" @click="goto">
       <center>
-        <font size="7" color="white">知识图谱</font>
+        <font size="7" color="white">事件演化</font>
       </center>
       <div class="chart">
         <Echarts theme="ring" :option="options.right_down.option" className="chart" ></Echarts>
@@ -101,7 +106,8 @@
     data () {
       return {
         Common: Common,
-        jumpto: 'ring',
+        jumpto: 'page2',
+        topic: '朝鲜',
         intervalID: null,
         intervalRotate: null,
         region: null,
@@ -285,7 +291,7 @@
     mounted () {
       this.echartsGlobe();
       this.left_up_list = ChartData['topics'];
-      this.right_up_list = ChartData['exports'];
+      this.right_up_list = ChartData['exports'][this.topic];
       this.options.right_down.option = ChartLib['河流图'].option;
       this.options.left_down.option = ChartLib['折线图'].option;
     },
@@ -315,13 +321,13 @@
       axios.get('/api/getPageJump', {params: {}}).then(response => {
         // alert(response.data.page0.to)
         // eslint-disable-next-line no-unused-vars
-        this.jumpto = response.data.page1.to;
+        this.jumpto = response.data.page2.to;
         // let timer = setTimeout(function () { location.href = '../' + response.data.page1.to; } , response.data.page1.delay * 1000);
       });
     },
     methods: {
       goto: function () {
-        // document.location.href = Common.addr + Common.page1;
+        document.location.href = Common.addr + Common.page1;
       },
       initOptions: function () {
         axios.get('/api/getShowCharts').then(response => {
