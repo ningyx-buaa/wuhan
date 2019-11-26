@@ -6,14 +6,15 @@
         <font size="7" color="white">综合选题</font>
       </center>
       <ul>
-        <font size="6" color="white">
-          <table v-bind:key=tab v-for="tab in left_up_list" border="1">
-            <tr>
-              <td>{{tab}}</td>
-              <td>{{left_up_list[tab]}}</td>
+        <font size="5" color="white">
+          <table border="" cellspacing="" cellpadding="" >
+            <tr v-bind:key=v v-for="v in left_up_list">
+                <td width=50px>{{v.index}}</td>
+                <td width=70px @mouseover.native="clicking(v.topic)">{{v.topic}}</td>
+                <td>{{v.date}} {{v.text}}</td>
             </tr>
-          </table>
-          </font>
+          </table> 
+        </font>
       </ul>
     </a>
     <div class="con-box r-t-box" @click="goto">
@@ -23,7 +24,7 @@
       </center>
       <ul>
           <li v-bind:key=tab v-for="tab in right_up_list">
-            <font size="5" color="white">{{tab}}+{{right_up_list[tab]}}</font>
+            <font size="5" color="white">{{tab}}</font>
           </li>
       </ul>
     </div>
@@ -106,7 +107,7 @@
     data () {
       return {
         Common: Common,
-        jumpto: 'page2',
+        jumpto: "",
         topic: '朝鲜',
         intervalID: null,
         intervalRotate: null,
@@ -327,7 +328,7 @@
     },
     methods: {
       goto: function () {
-        document.location.href = Common.addr + Common.page1;
+        // document.location.href = Common.addr + Common.page1;
       },
       initOptions: function () {
         axios.get('/api/getShowCharts').then(response => {
@@ -339,6 +340,9 @@
           });
           this.updateData();
         });
+      },
+      clicking: function (term) {
+        this.topic = term;
       },
       updateData: function () {
         _.each(this.options, opt => {
