@@ -221,17 +221,20 @@ var ChartData = {
       'index': 1,
       'topic': '朝鲜',
       'date': '2019-10-07',
-      'text': '朝美磋商宣告破裂，双方需重申“无核化”原则'},
+      'text': '朝美磋商宣告破裂，双方需重申“无核化”原则',
+      'link': 'https://chinese.joins.com/gb/article.aspx?art_id=193090&category=002005'},
     '南海': {
       'index': 2,
       'topic': '南海',
       'date': '2019-11-18',
-      'text': '我国第二艘航母通过台湾海峡'},
+      'text': '我国第二艘航母通过台湾海峡',
+      'link': 'https://new.qq.com/rain/a/TWF2019111800472700'},
     '台湾': {
       'index': 3,
       'topic': '台湾',
       'date': '2019-11-25',
-      'text': '韩国瑜呛蔡英文贪污腐败'}
+      'text': '韩国瑜呛蔡英文贪污腐败',
+      'link': 'http://www.taiwan.cn/taiwan/jsxw/201911/t20191125_12220568.htm'}
   },
   'exports': {
     '朝鲜': [
@@ -245,6 +248,17 @@ var ChartData = {
       '韩国瑜: 贪污腐败这么严重，你们吃饱没？',
       '韩国瑜: 明年台湾人要为自己投一票，不要再迷信政党.'
     ]
+  },
+  'future': {
+    '朝鲜': [
+      '1.美国民主党正主导推动针对特朗普总统的弹劾案，三个月后美国进入大选政局，届时美国将鲜有精力应付朝核问题。',
+      '2.朝鲜很可能会借此机会，透露出重启洲际弹道导弹（ICBM）试射和核试验活动等撕毁协议的消息，对寻求连任的特朗普总统进行施压',
+      '3.如果特朗普总统决定采取军事行动应对朝鲜的压力，2017年笼罩韩半岛的“战争阴云”可能会再次出现。 '
+    ],
+    '南海': [
+    ],
+    '台湾': [
+    ],
   }
 }
 var kg_data = paint(ChartData.nodes_relations);
@@ -1556,7 +1570,7 @@ const ChartLib = {
       ]
    }
   },
-  '折线图': {
+  '折线图朝鲜': {
     option: {
       title: {
           text: ''
@@ -1565,7 +1579,7 @@ const ChartLib = {
           trigger: 'axis'
       },
       legend: {
-          data: ['事件1','事件2','事件3','事件4','事件5']
+          data: ['朝鲜','南海','台湾']
       },
       grid: {
           left: '3%',
@@ -1581,41 +1595,100 @@ const ChartLib = {
       xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一','周二','周三','周四','周五','周六','周日']
+          data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
       },
       yAxis: {
           type: 'value'
       },
       series: [
           {
-              name: '事件1',
+              name: '朝鲜',
               type: 'line',
               stack: '总量',
-              data: [120, 132, 101, 134, 90, 230, 210]
-          },
+              areaStyle: {normal: {}},
+              data: [3755,3511,3605,11859,4145,4635,63858,5108,4354,6547,7774,3720]
+          }
+      ]
+  }
+  },
+  '折线图南海': {
+    option: {
+      title: {
+          text: ''
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {
+          data: ['朝鲜','南海','台湾']
+      },
+      grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '25%',
+          containLabel: true
+      },
+      toolbox: {
+          feature: {
+              saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [
           {
-              name: '事件2',
+              name: '南海',
               type: 'line',
               stack: '总量',
-              data: [220, 182, 191, 234, 290, 330, 310]
+              areaStyle: {normal: {}},
+              data: [1317,1283,1424,1334,1331,1382,1351,1297,1121,1069,1248,21239]
           },
+      ]
+  }
+  },
+  '折线图台湾': {
+    option: {
+      title: {
+          text: ''
+      },
+      tooltip: {
+          trigger: 'axis',
+      },
+      legend: {
+          data: ['朝鲜','南海','台湾']
+      },
+      grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '25%',
+          containLabel: true
+      },
+      toolbox: {
+          feature: {
+              saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [
           {
-              name: '事件3',
+              name: '台湾',
               type: 'line',
               stack: '总量',
-              data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-              name: '事件4',
-              type: 'line',
-              stack: '总量',
-              data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-              name: '事件5',
-              type: 'line',
-              stack: '总量',
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
+              areaStyle: {normal: {}},
+              data: [11487,36273,7931,6272,26807,12048,11896,101372,27142,6611,28080,7223]
           }
       ]
   }

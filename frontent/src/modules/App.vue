@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="real-body">
-    <a :href="'/' + jumpto" class="con-box l-t-box" @click="goto">
+    <div :href="'/' + jumpto" class="con-box l-t-box">
       <!-- <Echarts theme="ring" :option="options.left_up.option" className="chart" ></Echarts> -->
       <center>
         <font size="7" color="white">综合选题</font>
@@ -8,15 +8,17 @@
       <ul>
         <font size="5" color="white">
           <table border="" cellspacing="" cellpadding="" >
-            <tr v-bind:key=v v-for="v in left_up_list">
+            <tr v-bind:key=v v-for="v in left_up_list" @click="clicking(v.topic)">
+              <a :href="v.link">
                 <td width=50px>{{v.index}}</td>
-                <td width=70px @mouseover.native="clicking(v.topic)">{{v.topic}}</td>
+              </a>
+                <td width=70px>{{v.topic}}</td>
                 <td>{{v.date}} {{v.text}}</td>
             </tr>
           </table> 
         </font>
       </ul>
-    </a>
+    </div>
     <div class="con-box r-t-box" @click="goto">
       <!-- <Echarts theme="ring" :option="options.right_up.option" className="chart" ></Echarts> -->
       <center>
@@ -55,10 +57,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-
   import 'components/charts/theme/Ring.js'
   import Echarts from 'vue-echarts-v3/src/full.js'
-
+  // import "yugu/js/jquery-1.8.0.min.js"
+  // import "yugu/js/fishBone.js"
+  // import "yugu/js/jquery.SuperSlide.2.1.1.js"
   import echarts from 'echarts'
   require('echarts-gl');
 
@@ -109,6 +112,8 @@
         Common: Common,
         jumpto: "",
         topic: '朝鲜',
+        topics: ['朝鲜','南海','台湾'],
+        topic_index: 0,
         intervalID: null,
         intervalRotate: null,
         region: null,
@@ -294,7 +299,7 @@
       this.left_up_list = ChartData['topics'];
       this.right_up_list = ChartData['exports'][this.topic];
       this.options.right_down.option = ChartLib['河流图'].option;
-      this.options.left_down.option = ChartLib['折线图'].option;
+      this.options.left_down.option = ChartLib['折线图' + this.topic].option;
     },
     created () {
       this.initOptions();
@@ -303,7 +308,16 @@
       }, 100 * 1000);
 
       setInterval(() => {
-        this.around();
+        if (this.topic_index === (3)) {
+           this.topic_index = 0;
+        };
+        if (this.topic_index === 0) {
+          this.around(63);
+        } else {
+          this.around(41);
+        }
+        this.clicking(this.topics[this.topic_index]);
+        this.topic_index = this.topic_index + 1;
       }, 2000);
       // setInterval(function() {
       //   this.around();
@@ -343,6 +357,17 @@
       },
       clicking: function (term) {
         this.topic = term;
+        this.right_up_list = ChartData['exports'][this.topic];
+        this.options.left_down.option = ChartLib['折线图' + this.topic].option;
+      },
+      findcountry: function (country) {
+        var o;
+        console.log(country);
+        for (o in this.regions) {
+          if (o.name === country) {
+            return o;
+          }
+        }
       },
       updateData: function () {
         _.each(this.options, opt => {
@@ -417,19 +442,29 @@
             //   }
             // },
             viewControl: {
+              autoRotateSpeed: 0,
               animationDurationUpdate: 1000,
               animationEasingUpdate: 'cubicInOut',
               targetCoord: [116.46, 39.92],
-              autoRotate: false
+              autoRotate: true
             }
           }
         };
         this.globe = echarts.init(document.getElementById('echarts-globe'));
         this.globe.setOption(globe_new_option);
         this.regions = mapChart.getModel().getComponent('geo').coordinateSystem.regions;
+        var geo;
+        geo = mapChart.getModel().getComponent('geo').coordinateSystem;
+        console.log("---------------------------------");
+        console.log(this.regions);
+        console.log(geo.getRegion('China'));
+        console.log(geo.getRegion('Dem.Rep.korea'));
+        console.log(geo.getRegion('朝鲜'));
+        console.log(this.findcountry("Dem.Rep.korea"));
       },
-      around () {
-        this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
+      around (index) {
+        // this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
+        this.region = this.regions[index];
         this.globe.setOption({
           title: {
             left: 'center',
@@ -522,11 +557,10 @@
 
 <style lang="sass">
   @import "~assets/sass/common"
-
   .con-box
     position: absolute
-    width: 30%
-    height: 35%
+    width: 37%
+    height: 45%
     padding: .7rem 1rem .8rem
     background-image: url("~assets/images/box-bg.png")
     background-size: 100% 100%
