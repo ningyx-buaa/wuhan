@@ -318,7 +318,7 @@
         }
         this.clicking(this.topics[this.topic_index]);
         this.topic_index = this.topic_index + 1;
-      }, 2000);
+      }, 10000);
       // setInterval(function() {
       //   this.around();
       // }, 2000);
@@ -359,6 +359,7 @@
         this.topic = term;
         this.right_up_list = ChartData['exports'][this.topic];
         this.options.left_down.option = ChartLib['折线图' + this.topic].option;
+        this.around(41);
       },
       findcountry: function (country) {
         var o;
