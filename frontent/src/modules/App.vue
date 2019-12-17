@@ -9,11 +9,13 @@
         <font size="5" color="white">
           <table border="" cellspacing="" cellpadding="" >
             <tr v-bind:key=v v-for="v in left_up_list" @click="clicking(v.topic)">
-              <a :href="v.link">
                 <td width=50px>{{v.index}}</td>
-              </a>
                 <td width=70px>{{v.topic}}</td>
-                <td>{{v.date}} {{v.text}}</td>
+                <a :href="v.link">
+                  <font size="5" color="white">
+                    <td>{{v.date}} {{v.text}}</td>
+                  </font>
+                </a>
             </tr>
           </table> 
         </font>
