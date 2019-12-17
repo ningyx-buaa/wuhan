@@ -6,6 +6,7 @@ export default {
   // page3: 'customs/publicOpinion.html'
   // addr: 'http://218.106.244.92/',
   addr: 'http://218.106.244.92:15000/',
+  ring: 'ring.html',
   page0: 'index.html',
   page1: 'index.html',
   page2: 'traveler.html',

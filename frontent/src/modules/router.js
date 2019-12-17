@@ -13,6 +13,12 @@ const router = new Router({
       name: 'Page1',
       component: Page1
     },
+    // {
+    //   // ring路由
+    //   path: '/page2',
+    //   name: 'Page2',
+    //   component: Page2
+    // },
   ]
 });
 
