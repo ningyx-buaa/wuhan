@@ -3,6 +3,227 @@
  */
 import Graphic from 'echarts/lib/util/graphic'
 
+var fish_data = [
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
+  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'}
+]
+
+function fishBone (data) {
+  var colors = ['#F89782', '#1A84CE', '#F7A259', '#43A6DA', '#F9BF3B','#88C7CC','#EF6D5F','#60A96E','#F03852','#3A9284'];
+  $(this).children().remove();
+  $(this).append(creataFishBone(data));
+  // 2.自适应
+  var rowcount = fixWindow();
+  // 3.翻页滚动效果
+  // jQuery(".fishBone").slide({
+  //     titCell: ".hd ul",
+  //     mainCell: ".bd>ul",
+  //     autoPage: true,
+  //     effect: "left",
+  //     autoPlay: false,
+  //     scroll: rowcount,
+  //     vis: rowcount
+  // });
+
+  function fixWindow () {
+      // item所占的宽度 = 自身宽度+marginleft
+      var item = $(".fishBone .bd .item");
+      var marginleft = parseInt(item.css('margin-left'))
+      var item_w = item.width() + marginleft;
+
+      // 显示区域
+      var bd_w = $(".fishBone .bd").width();
+      // 能显示的个数 取整
+      var rowcount = parseInt(bd_w / item_w);
+      if (rowcount > item.size()) {
+          // rowcount = item.size();
+          $(".fishBone .prev,.fishBone .next").hide()
+      }
+      // 设置新的宽度使其平均分布
+      var item_w_temp = bd_w / rowcount - marginleft;
+      item.width(item_w_temp);
+      return rowcount;
+  };
+
+  function getColor (i) {
+      var length = colors.length;
+      var color = 'gray';
+      if (i <= length - 1) {
+          color = colors[i];
+      } else {
+          color = colors[i % length];
+      }
+      return color;
+  };
+
+  function getLinePointY (i) {
+      var length = colors.length;
+      var y = 0;
+      if (i <= length - 1) {
+          y = -i * 20;
+      } else {
+          y = -(i % length) * 20;
+      }
+      return y + "px";
+  };
+
+  function getLineFirstY (i) {
+      var length = colors.length;
+      var y = 0;
+      if (i <= length - 1) {
+          y = -i * 60;
+      } else {
+          y = -(i % length) * 60;
+      }
+      return y + "px";
+  };
+
+  function getTitleLeftY (i) {
+      var length = colors.length;
+      var y = 0;// 图片位置
+      if (i <= length - 1) {
+          y += -i * 60;
+      } else {
+          y += -(i % length) * 60;
+      }
+      return y + "px";
+  };
+
+  function getTitleCenterY (i) {
+      var length = colors.length;
+      var y = -598;// 图片位置
+      if (i <= length - 1) {
+          y += -i * 60;
+      } else {
+          y += -(i % length) * 60;
+      }
+      return y + "px";
+  };
+
+  function getTitleRightY (i) {
+      var length = colors.length;
+      var y = -1200;// 图片位置
+      if (i <= length - 1) {
+          y += -i * 60;
+      } else {
+          y += -(i % length) * 60;
+      }
+      return y + "px";
+  };
+
+  function creataFishBone (data) {
+      var fishBone = $("<div class='fishBone'/>");
+      var wrapper = $("<div class='wrapper'></div>");
+      var bd = $("<div class='bd'></div>");
+      var ul_item = $("<ul/>");
+      // 遍历数据
+      $(data).each(function (index) {
+          var itemclass = itemClass(index);// 显示在轴上方或下方标识 top/bottom
+
+          var color = getColor(index);
+          var lineFirstY = getLineFirstY(index);
+          var titleLeftY = getTitleLeftY(index);
+          var titleCenterY = getTitleCenterY(index);
+          var titleRightY = getTitleRightY(index);
+          var ul = $("<ul></ul>");
+          // 遍历封装属性
+          // 封装审理时间和案号
+          if (itemclass === 'top') {
+              $.each(this, function (name, value) {
+                  if (name === '审理时间') {
+                      var li = $("<li class='line-first'>" + value + "</li>")
+                                  .css('background-position-y', (parseInt(lineFirstY) + 9) + "px");// 9是原计算结果的偏移量，显示位置正合适
+                      li.appendTo(ul);
+                      return;
+                  }
+              });
+              $.each(this, function (name, value) {
+                  if (name === '案号') {
+                      var li = $("<li class='title'></li>");
+                      var titleLeft = $("<span class='title-left'>&nbsp;</span>").css('background-position-y',titleLeftY);
+                      var titleCenter = $("<span class='title-center'>" + value + "</span>").css('background-position-y',titleCenterY);
+                      var titleRight = $("<span class='title-right'>&nbsp;</span>").css('background-position-y',titleRightY);
+                      li.append(titleLeft).append(titleCenter).append(titleRight);
+                      li.appendTo(ul);
+                      return;
+                  }
+              });
+          }
+          // 封装其他属性
+          $.each(this, function (name, value) {
+              if (name !== '案号' && name !== '审理时间') {
+                  var li = $("<li>" + name + "：" + value + "</li>").css("border-left","1px solid " + color);
+                  li.appendTo(ul);
+              }
+          });
+        // 封装审理时间和案号
+          if (itemclass === "bottom") {
+              $.each(this, function (name, value) {
+                  if (name === '案号') {
+                      var li = $("<li class='title'></li>");
+                      var titleLeft = $("<span class='title-left'>&nbsp;</span>").css('background-position-y',titleLeftY);
+                      var titleCenter = $("<span class='title-center'>" + value + "</span>").css('background-position-y',titleCenterY);
+                      var titleRight = $("<span class='title-right'>&nbsp;</span>").css('background-position-y',titleRightY);
+                      li.append(titleLeft).append(titleCenter).append(titleRight);
+                      li.appendTo(ul);
+                      return;
+                  }
+              });
+              $.each(this, function (name, value) {
+                  if (name === '审理时间') {
+                      var li = $("<li class='line-first'>" + value + "</li>")
+                      .css('background-position-y', (parseInt(lineFirstY) - 33) + "px");// 30是原计算结果的偏移量
+                      li.appendTo(ul);
+                      return;
+                  }
+              });
+          }
+          // 封装轴线上的圆点
+          var linePointY = getLinePointY(index);
+          var point = $("<li class='line-last line-point'></li>").css('background-position', '0px ' + linePointY);
+          point.appendTo(ul);
+          // 生成一个item（一个完整的案件）
+          var li_item = $("<li class='item'></li>");
+          var content = $("<div class='content'></div>");
+          ul.appendTo(content);
+          content.appendTo(li_item);
+          li_item.addClass(itemClass(index)).appendTo(ul_item);
+      });
+      ul_item.appendTo(bd);
+      bd.appendTo(wrapper);
+
+      var prev = $("<a class='prev'></a>");
+      var next = $("<a class='next'></a>");
+      var line = $("<div class='line'/>")
+
+      fishBone.append(wrapper).append(prev).append(next).append(line);
+      return fishBone;
+  };
+
+  function itemClass (index) {
+      index += 1;
+      if (index % 2 === 0) {
+          // 偶数显示到下方
+          return "bottom";
+      } else {
+          // 奇数显示到上方
+          return "top";
+      }
+  }
+}
+
 function paint (result) {
   var nodes = [];
   var links = [];
@@ -220,9 +441,9 @@ var ChartData = {
     '朝鲜': {
       'index': 1,
       'topic': '朝鲜',
-      'date': '2019-10-07',
-      'text': '朝美磋商宣告破裂，双方需重申“无核化”原则',
-      'link': 'https://chinese.joins.com/gb/article.aspx?art_id=193090&category=002005'},
+      'date': '2019-12-14',
+      'text': '朝鲜丰溪里核试验场现重启迹象，卫星发现汽车驶过痕迹',
+      'link': 'http://news.cctv.com/2019/12/14/ARTI95FJ4WPyLbdwTrTuitlj191214.shtml'},
     '南海': {
       'index': 2,
       'topic': '南海',
@@ -238,15 +459,46 @@ var ChartData = {
   },
   'exports': {
     '朝鲜': [
-    '1.朝鲜巡回大使金明吉：在过去一年内，美国共发起15次制裁，并重启联合军事演习，部署尖端战争设备，威胁朝鲜生存权。',
-    '2.美国: 坚持只有在朝鲜接受“宁边+α”的条件之后，才可以在一定程度上放宽煤炭和石油制裁'
+    {
+      'text': '1.韩国《中央日报》：仅从这些轻微的迹象，尚无法判断朝鲜正在重启核试验基地。',
+      'link': 'http://news.cctv.com/2019/12/14/ARTI95FJ4WPyLbdwTrTuitlj191214.shtml'
+    },{
+      'text': '2.韩国 当局：朝鲜可以在数周或数月内完成核试验场的复原工作。',
+      'link': 'http://news.cctv.com/2019/12/14/ARTI95FJ4WPyLbdwTrTuitlj191214.shtml'
+    },{
+      'text': '3.外界：朝鲜可能在年底期限到来之际重启洲际导弹试射等活动。',
+      'link': 'http://news.cctv.com/2019/12/14/ARTI95FJ4WPyLbdwTrTuitlj191214.shtml'
+    },{
+      'text': '4.美国 斯蒂芬·比根：称朝鲜为“流氓国家”。',
+      'link': 'https://k.sina.com.cn/article_1686546714_6486a91a02000wxzp.html?from=news&subch=onews'
+    },{
+      'text': '5.日本 菅义伟：日本将继续与美国等紧密合作，高度关注朝鲜动向，确保信息收集和警戒监视万无一失。',
+      'link': 'https://k.sina.com.cn/article_1686546714_6486a91a02000wxzp.html?from=news&subch=onews'
+    }
     ],
     '南海': [
-      '海军发言人程德伟：这次组织国产航母跨区开展试验和训练，是航母建造过程中的正常安排，不针对任何特定目标，与当前的局势无关。'
+      {
+       'text': '1.海军发言人程德伟：这次组织国产航母跨区开展试验和训练，是航母建造过程中的正常安排，不针对任何特定目标，与当前的局势无关。',
+       'link': 'https://new.qq.com/rain/a/TWF2019111800472700'
+      },{
+       'text': '2.美国 国防部长 埃斯珀：美国国防的重中之重，第一是中国，第二是俄罗斯。',
+       'link': 'https://mil.news.sina.com.cn/china/2019-12-14/doc-iihnzhfz5845352.shtml'
+      },{
+       'text': '3.印度：中国的崛起令亚洲国家普遍感到不安。',
+       'link': 'https://news.sina.com.cn/w/2019-12-02/doc-iihnzhfz2998428.shtml'
+      }
     ],
     '台湾': [
-      '韩国瑜: 贪污腐败这么严重，你们吃饱没？',
-      '韩国瑜: 明年台湾人要为自己投一票，不要再迷信政党.'
+      {
+       'text': '1.台湾 韩国瑜: 明年台湾人要为自己投一票，不要再迷信政党。',
+       'link': 'http://www.taiwan.cn/taiwan/jsxw/201911/t20191125_12220568.htm'
+      },{
+       'text': '2.香港 中评社：民调失真，政治操作取代了政策、政纲比拼。',
+       'link': 'https://k.sina.com.cn/article_1709286740_65e1a55402000ma0d.html?from=news&subch=onews'
+      },{
+       'text': '3.香港 中评社：民进党选战信心不足。',
+       'link': 'https://k.sina.com.cn/article_1709286740_65e1a55402000m9e5.html?from=news&subch=onews'
+      }
     ]
   },
   'future': {
@@ -1695,6 +1947,501 @@ const ChartLib = {
           }
       ]
   }
+  },
+  '事件演化朝鲜': {
+      option: {
+                title: {
+                    text: '朝鲜核试验',
+                    top: '12%',
+                    left: '43%',
+                    textStyle: {fontSize: 22},
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    data: ['朝鲜'],
+                    show: 'true',
+                    top: '40',
+                    textStyle: {
+                        fontWeight: 'bold',
+                        fontSize: '18',
+                        color: ['#01a2e9'],
+                    }
+                },
+                singleAxis: {
+                    top: '60%',
+                    bottom: '50%',
+                    axisLabel: {
+                        interval: 1
+                    },
+                    type: 'category',
+                    axisLine: {
+                        lineStyle: {
+                            color: 'white',
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    },
+                    boundaryGap: false,
+                    data: ['2018年12月','2019年1月','2019年2月','2019年3月','2019年4月','2019年5月','2019年6月','2019年7月',
+                    '2019年8月','2019年9月','2019年10月','2019年11月'],
+                },
+                series: [{
+                    name: '朝鲜核实验',
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'top',
+                            color: 'rgb(21,162,233,0.8)',
+                            fontSize: '14'
+                        }
+                    },
+                    coordinateSystem: 'singleAxis',
+                    type: 'scatter',
+                    markPoint: {
+                        data: [{
+                                coord: [1, 29],
+                                label: {
+                                    normal: {
+                                        padding: [5, 10, 10, 10],
+                                        fontSize: 17,
+                                        color: "yellow",
+                                        formatter: ['就朝鲜\n“重大\n试验”\n特朗普\n警告\n“会失去\n一切\n'].join(""),
+                                    }
+                                },
+                                itemStyle: {
+                                    color: '#c03636',
+                                },
+                            },
+                            {
+                                label: {
+                                    normal: {
+                                        padding: [5, 10, 10, 10],
+                                        fontSize: 17,
+                                        color: "yellow",
+                                        formatter: ['朝鲜\n试验\n疑涉及\n洲际\n导弹\n美朝\n融洽\n关系\n或将\n走向\n破裂'].join(""),
+                                    }
+                                },
+                                itemStyle: {
+                                    color: '#c03636',
+                                },
+                                coord: [2, 24],
+                            },
+                            {
+                                label: {
+                                    normal: {
+                                        padding: [5, 10, 10, 10],
+                                        fontSize: 17,
+                                        color: "yellow",
+                                        formatter: ['外媒：\n朝鲜\n丰溪里\n核试\n验场\n现重启\n迹象\n有汽车\n痕迹'].join(""),
+                                    }
+                                },
+                                itemStyle: {
+                                    color: '#c03636',
+                                },
+                                coord: [4, 24],
+                            },
+                            {
+                                coord: [7, 21],
+                                label: {
+                                    normal: {
+                                        padding: [5, 10, 10, 10],
+                                        fontSize: 17,
+                                        color: "yellow",
+                                        formatter: ['美国\n卫星\n监拍：\n朝鲜\n核试\n验场\n出现\n异动 '].join(""),
+                                    }
+                                },
+                                itemStyle: {
+                                    color: '#344b5b',
+                                },
+                            },
+                            {
+                                label: {
+                                    normal: {
+                                        padding: [5, 10, 10, 10],
+                                        fontSize: 17,
+                                        color: "yellow",
+                                        formatter: ['朝鲜\n要送\n美国\n圣诞"大礼" \n张召忠：\n意义\n不亚于\n核试验'].join(""),
+                                    }
+                                },
+                                itemStyle: {
+                                    color: '#344b5b',
+                                },
+                                coord: [6, 21],
+                            },
+                            {
+                                label: {
+                                    normal: {
+                                        padding: [5, 10, 10, 10],
+                                        fontSize: 17,
+                                        color: "yellow",
+                                        formatter: ['中俄\n提议\n解除\n部分\n对朝\n制裁'].join(""),
+                                    }
+                                },
+                                itemStyle: {
+                                    color: '#344b5b',
+                                },
+                                coord: [15, 21],
+                            },
+                            // {type : 'max',
+                            //     formatter: ['1'].join(""),
+                            //     name: '最大值',symbolOffset:[0,'-20%'],
+                            //     itemStyle:{
+                            //         color:'#c03636',
+                            //     },},
+                            // {type : 'min', name: '最小值',symbolOffset:[0,'-20%'],
+                            //     itemStyle:{
+                            //         color:'#344b5b',
+                            //     }}
+                        ]
+                    },
+                    symbolSize: function (data) {
+                        return Math.floor(Math.random() * data + 20);
+                    },
+                    data: ['20', '50', '29', '27', '25', '22', '4', '5', '25', '22', '21', '22', '24', '25.5',
+                        '26', '2'
+                    ],
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(21,162,233,0.9)',
+                        }
+                    }
+                }, ]
+    }
+  },
+  '事件演化南海': {
+    option: {
+              title: {
+                  text: '南海争端',
+                  top: '12%',
+                  left: '43%',
+                  textStyle: {fontSize: 22},
+              },
+              tooltip: {
+                  trigger: 'item'
+              },
+              legend: {
+                  data: ['南海'],
+                  show: 'true',
+                  top: '40',
+                  textStyle: {
+                      fontWeight: 'bold',
+                      fontSize: '18',
+                      color: ['#01a2e9'],
+                  }
+              },
+              singleAxis: {
+                  top: '60%',
+                  bottom: '50%',
+                  axisLabel: {
+                      interval: 1
+                  },
+                  type: 'category',
+                  axisLine: {
+                      lineStyle: {
+                          color: 'white',
+                      }
+                  },
+                  splitLine: {
+                      lineStyle: {
+                          type: 'dashed'
+                      }
+                  },
+                  boundaryGap: false,
+                  data: ['2018年12月','2019年1月','2019年2月','2019年3月','2019年4月','2019年5月','2019年6月','2019年7月',
+                  '2019年8月','2019年9月','2019年10月','2019年11月'],
+              },
+              series: [{
+                  name: '南海争端',
+                  label: {
+                      normal: {
+                          show: false,
+                          position: 'top',
+                          color: 'rgb(21,162,233,0.8)',
+                          fontSize: '14'
+                      }
+                  },
+                  coordinateSystem: 'singleAxis',
+                  type: 'scatter',
+                  markPoint: {
+                      data: [{
+                              coord: [1, 29],
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['印日\n举行\n首次\n部长级\n"2+2"\n对话\n双方\n讨论\n南海\n问题'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#c03636',
+                              },
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['越南\n阻拦\n失败，\n经过\n数月\n努力后，\n中国\n海警\n已在\n万安滩\n常态化\n巡逻 '].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#c03636',
+                              },
+                              coord: [2, 24],
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['外网评：\n加速\n“南海\n行为\n准则”\n磋商，\n中国\n和东盟\n做了\n哪些\n工作？'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#c03636',
+                              },
+                              coord: [4, 24],
+                          },
+                          {
+                              coord: [7, 21],
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['越南\n在南海\n建岛，\n投入\n美国\n怀抱后，\n更需\n警惕\n双方\n狼狈\n为奸'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#344b5b',
+                              },
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['令美国\n失望了！\n中越\n海军\n在南海\n相遇，\n实力\n差距\n明显！\n没掐\n起来'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#344b5b',
+                              },
+                              coord: [6, 21],
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['令美国失望了！中越海军在南海相遇，实力差距明显！没掐起来 '].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#344b5b',
+                              },
+                              coord: [15, 21],
+                          },
+                          // {type : 'max',
+                          //     formatter: ['1'].join(""),
+                          //     name: '最大值',symbolOffset:[0,'-20%'],
+                          //     itemStyle:{
+                          //         color:'#c03636',
+                          //     },},
+                          // {type : 'min', name: '最小值',symbolOffset:[0,'-20%'],
+                          //     itemStyle:{
+                          //         color:'#344b5b',
+                          //     }}
+                      ]
+                  },
+                  symbolSize: function (data) {
+                      return Math.floor(Math.random() * data + 20);
+                  },
+                  data: ['20', '50', '29', '27', '25', '22', '4', '5', '25', '22', '21', '22', '24', '25.5',
+                      '26', '2'
+                  ],
+                  itemStyle: {
+                      normal: {
+                          color: 'rgb(21,162,233,0.9)',
+                      }
+                  }
+              }, ]
+  }
+  },
+  '事件演化台湾': {
+    option: {
+              title: {
+                  text: '台湾大选',
+                  top: '12%',
+                  left: '43%',
+                  textStyle: {fontSize: 22},
+              },
+              tooltip: {
+                  trigger: 'item'
+              },
+              legend: {
+                  data: ['台湾'],
+                  show: 'true',
+                  top: '40',
+                  textStyle: {
+                      fontWeight: 'bold',
+                      fontSize: '18',
+                      color: ['#01a2e9'],
+                  }
+              },
+              singleAxis: {
+                  top: '60%',
+                  bottom: '50%',
+                  axisLabel: {
+                      interval: 1
+                  },
+                  type: 'category',
+                  axisLine: {
+                      lineStyle: {
+                          color: 'white',
+                      }
+                  },
+                  splitLine: {
+                      lineStyle: {
+                          type: 'dashed'
+                      }
+                  },
+                  boundaryGap: false,
+                  data: ['2018年12月','2019年1月','2019年2月','2019年3月','2019年4月','2019年5月','2019年6月','2019年7月',
+                  '2019年8月','2019年9月','2019年10月','2019年11月'],
+              },
+              series: [{
+                  name: '台湾大选',
+                  label: {
+                      normal: {
+                          show: false,
+                          position: 'top',
+                          color: 'rgb(21,162,233,0.8)',
+                          fontSize: '14'
+                      }
+                  },
+                  coordinateSystem: 'singleAxis',
+                  type: 'scatter',
+                  markPoint: {
+                      data: [{
+                              coord: [1, 29],
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['蔡英文\n宣称\n年内\n完成\n“反渗透法”,\n马英九\n斥：\n制造\n恐惧\n骗选票，\n其心\n可诛'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#c03636',
+                              },
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['蓝绿\n决战\n“中彰投”，\n没想到\n民进党\n竟用\n一招\n“独领风骚”？'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#c03636',
+                              },
+                              coord: [2, 24],
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['来去\n蔡办\n住一晚？\n蔡英文\n用办公室\n拉选票\n被批：\n台湾\n不是\n你家'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#c03636',
+                              },
+                              coord: [4, 24],
+                          },
+                          {
+                              coord: [7, 21],
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['港媒：\n台湾\n选情\n诡异，\n三个\n现象\n异于\n过往'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#344b5b',
+                              },
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['马英九\n痛批：\n蔡英文\n用香港人\n的鲜血\n骗台湾\n选票'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#344b5b',
+                              },
+                              coord: [6, 21],
+                          },
+                          {
+                              label: {
+                                  normal: {
+                                      padding: [5, 10, 10, 10],
+                                      fontSize: 17,
+                                      color: "yellow",
+                                      formatter: ['台湾\n2020\n选举\n有漏洞！\n台"中选会"\n擅改\n规则\n空白\n选票\n恐成\n输赢\n关键'].join(""),
+                                  }
+                              },
+                              itemStyle: {
+                                  color: '#344b5b',
+                              },
+                              coord: [15, 21],
+                          },
+                          // {type : 'max',
+                          //     formatter: ['1'].join(""),
+                          //     name: '最大值',symbolOffset:[0,'-20%'],
+                          //     itemStyle:{
+                          //         color:'#c03636',
+                          //     },},
+                          // {type : 'min', name: '最小值',symbolOffset:[0,'-20%'],
+                          //     itemStyle:{
+                          //         color:'#344b5b',
+                          //     }}
+                      ]
+                  },
+                  symbolSize: function (data) {
+                      return Math.floor(Math.random() * data + 20);
+                  },
+                  data: ['20', '50', '29', '27', '25', '22', '4', '5', '25', '22', '21', '22', '24', '25.5',
+                      '26', '2'
+                  ],
+                  itemStyle: {
+                      normal: {
+                          color: 'rgb(21,162,233,0.9)',
+                      }
+                  }
+              }, ]
+  }
   }
 };
-export {ChartLib, ChartData};
+export {fish_data, fishBone, ChartLib, ChartData};

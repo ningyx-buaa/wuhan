@@ -26,7 +26,9 @@
       </center>
       <ul>
           <li v-bind:key=tab v-for="tab in right_up_list">
-            <font size="5" color="white">{{tab}}</font>
+            <a :href="tab.link">
+              <font size="5" color="white">{{tab.text}}</font>
+            </a>
           </li>
       </ul>
     </div>
@@ -60,7 +62,7 @@
   import 'components/charts/theme/Ring.js'
   import Echarts from 'vue-echarts-v3/src/full.js'
   // import "yugu/js/jquery-1.8.0.min.js"
-  // import "yugu/js/fishBone.js"
+  // import {fishBone} from "yugu/js/fishBone.js"
   // import "yugu/js/jquery.SuperSlide.2.1.1.js"
   import echarts from 'echarts'
   require('echarts-gl');
@@ -69,7 +71,7 @@
 
   import Common from 'components/Common.js'
 
-  import {ChartLib, ChartData} from './ChartLib.js'
+  import {fish_data, fishBone, ChartLib, ChartData} from './ChartLib.js'
 
   import BaseTexture from 'components/texture/Base.js'
   // import HeightTexture from 'components/texture/Height.js'
@@ -298,7 +300,7 @@
       this.echartsGlobe();
       this.left_up_list = ChartData['topics'];
       this.right_up_list = ChartData['exports'][this.topic];
-      this.options.right_down.option = ChartLib['河流图'].option;
+      this.options.right_down.option = ChartLib['事件演化朝鲜'].option;
       this.options.left_down.option = ChartLib['折线图' + this.topic].option;
     },
     created () {
@@ -359,6 +361,7 @@
         this.topic = term;
         this.right_up_list = ChartData['exports'][this.topic];
         this.options.left_down.option = ChartLib['折线图' + this.topic].option;
+        this.options.right_down.option = ChartLib['事件演化' + this.topic].option;
         this.around(41);
       },
       findcountry: function (country) {
