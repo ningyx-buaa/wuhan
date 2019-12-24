@@ -1,0 +1,7 @@
+.DS_Store
+frontent/node_modules/
+
+# for idea
+.idea
+# for vscode
+.vscode
