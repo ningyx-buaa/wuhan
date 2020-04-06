@@ -17,7 +17,7 @@ var port = process.env.PORT || config.dev.port
 if (process.argv[2] === '--local') {
   port = 8091
 }
-
+//port = 8092
 // automatically open browser, if not set will be false
 var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // Define HTTP proxies to your custom API backend
@@ -25,6 +25,14 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+
+var goodsData = require('../data.json')
+var router = express.Router()
+router.get("/goods", function (req,res) {
+  res.json(goodsData)
+})
+app.use(router)
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {

@@ -2,23 +2,63 @@
  * All provided echarts options.
  */
 import Graphic from 'echarts/lib/util/graphic'
-
-var fish_data = [
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号'},
-  {'审理时间': '2016-12-20 至 2016-12-20', '承办庭室': 'XXXX','承办法官': 'XXX', '承办法院': 'XXXXXXX法院', '案件状态': 'XX', '案号': '(XXXX)XXXXXX第XXXX号(当前案件)'}
+import Data from "../assets/data/data.json"
+console.log(Data.event)
+// console.log(Data.event[0])
+var fish_data = {}
+var dataBJ = Data.event1
+var dataSH = Data.event2
+var dataGZ = Data.event3
+// var dataBJ = [
+//   // [1,Data.event.text,Data.event.emotion]
+//   [29,55,9,56,0.46,18,6,"ningyx"],
+//   // [2,25,11,21,0.65,34,9,"优"],
+//   [3,Data.event.emotion,7,63,0.3,14,5,Data.event.text],
+//   // [4,33,7,29,0.33,16,6,"优"],
+//   // [5,42,24,44,0.76,40,16,"优"],
+//   // [6,82,58,90,1.77,68,33,"良"],
+//   // [7,74,49,77,1.46,48,27,"良"],
+//   // [8,78,55,80,1.29,59,29,"良"],
+//   // [9,267,216,280,4.8,108,64,"重度污染"],
+//   // [10,185,127,216,2.52,61,27,"中度污染"],
+//   // [11,39,19,38,0.57,31,15,"优"],
+//   // [12,41,11,40,0.43,21,7,"优"],
+//   // [13,64,38,74,1.04,46,22,"良"],
+//   // [14,108,79,120,1.7,75,41,"轻度污染"],
+//   // [15,108,63,116,1.48,44,26,"轻度污染"],
+//   // [16,33,6,29,0.34,13,5,"优"],
+//   // [17,94,66,110,1.54,62,31,"良"],
+//   // [18,186,142,192,3.88,93,79,"中度污染"],
+//   // [19,57,31,54,0.96,32,14,"良"],
+//   // [20,22,8,17,0.48,23,10,"优"],
+//   // [21,39,15,36,0.61,29,13,"优"],
+//   // [22,94,69,114,2.08,73,39,"良"],
+//   // [23,99,73,110,2.43,76,48,"良"],
+//   // [24,31,12,30,0.5,32,16,"优"],
+//   // [25,42,27,43,1,53,22,"优"],
+//   // [26,154,117,157,3.05,92,58,"中度污染"],
+//   // [27,234,185,230,4.09,123,69,"重度污染"],
+//   // [28,160,120,186,2.77,91,50,"中度污染"],
+//   // [29,134,96,165,2.76,83,41,"轻度污染"],
+//   // [30,52,24,60,1.03,50,21,"良"],
+//   // [31,46,5,49,0.28,10,6,"优"]
+// ]
+var schema = [
+  {name: 'emotion', index: 0, text: '日'},
+  {name: 'text', index: 1, text: '新闻热度值'},
+  {name: 'date', index: 2, text: '发生日期'},
+  // {name: 'PM10', index: 3, text: 'PM10'},
+  // {name: 'CO', index: 4, text: '一氧化碳（CO）'},
+  // {name: 'NO2', index: 5, text: '二氧化氮（NO2）'},
+  // {name: 'SO2', index: 6, text: '二氧化硫（SO2）'}
 ]
+var itemStyle = {
+  opacity: 0.8,
+  shadowBlur: 10,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
+  shadowColor: 'rgba(0, 0, 0, 0.5)'
+}
 
 function fishBone (data) {
   var colors = ['#F89782', '#1A84CE', '#F7A259', '#43A6DA', '#F9BF3B','#88C7CC','#EF6D5F','#60A96E','#F03852','#3A9284'];
@@ -1889,8 +1929,7 @@ const ChartLib = {
       xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['2018年12月','2019年1月','2019年2月','2019年3月','2019年4月','2019年5月','2019年6月','2019年7月',
-          '2019年8月','2019年9月','2019年10月','2019年11月']
+          data: Data.static.x
       },
       yAxis: {
           type: 'value'
@@ -1901,7 +1940,7 @@ const ChartLib = {
               type: 'line',
               stack: '总量',
               areaStyle: {normal: {}},
-              data: [1317,1283,1424,1334,1331,1382,1351,1297,1121,1069,1248,21239]
+              data: Data.static.y
           },
       ]
   }
@@ -1952,8 +1991,8 @@ const ChartLib = {
       option: {
                 title: {
                     text: '朝鲜核试验',
-                    top: '12%',
-                    left: '43%',
+                    top: '6%',
+                    left: '70%',
                     textStyle: {fontSize: 22},
                 },
                 tooltip: {
@@ -2008,7 +2047,7 @@ const ChartLib = {
                                 label: {
                                     normal: {
                                         padding: [5, 10, 10, 10],
-                                        fontSize: 17,
+                                        fontSize: 10,
                                         color: "yellow",
                                         formatter: ['就朝鲜\n“重大\n试验”\n特朗普\n警告\n“会失去\n一切\n'].join(""),
                                     }
@@ -2021,7 +2060,7 @@ const ChartLib = {
                                 label: {
                                     normal: {
                                         padding: [5, 10, 10, 10],
-                                        fontSize: 17,
+                                        fontSize: 10,
                                         color: "yellow",
                                         formatter: ['朝鲜\n试验\n疑涉及\n洲际\n导弹\n美朝\n融洽\n关系\n或将\n走向\n破裂'].join(""),
                                     }
@@ -2035,7 +2074,7 @@ const ChartLib = {
                                 label: {
                                     normal: {
                                         padding: [5, 10, 10, 10],
-                                        fontSize: 17,
+                                        fontSize: 10,
                                         color: "yellow",
                                         formatter: ['外媒：\n朝鲜\n丰溪里\n核试\n验场\n现重启\n迹象\n有汽车\n痕迹'].join(""),
                                     }
@@ -2050,7 +2089,7 @@ const ChartLib = {
                                 label: {
                                     normal: {
                                         padding: [5, 10, 10, 10],
-                                        fontSize: 17,
+                                        fontSize: 10,
                                         color: "yellow",
                                         formatter: ['美国\n卫星\n监拍：\n朝鲜\n核试\n验场\n出现\n异动 '].join(""),
                                     }
@@ -2063,7 +2102,7 @@ const ChartLib = {
                                 label: {
                                     normal: {
                                         padding: [5, 10, 10, 10],
-                                        fontSize: 17,
+                                        fontSize: 10,
                                         color: "yellow",
                                         formatter: ['朝鲜\n要送\n美国\n圣诞"大礼" \n张召忠：\n意义\n不亚于\n核试验'].join(""),
                                     }
@@ -2077,7 +2116,7 @@ const ChartLib = {
                                 label: {
                                     normal: {
                                         padding: [5, 10, 10, 10],
-                                        fontSize: 17,
+                                        fontSize: 10,
                                         color: "yellow",
                                         formatter: ['中俄\n提议\n解除\n部分\n对朝\n制裁'].join(""),
                                     }
@@ -2117,8 +2156,8 @@ const ChartLib = {
     option: {
               title: {
                   text: '南海争端',
-                  top: '12%',
-                  left: '43%',
+                  top: '6%',
+                  left: '70%',
                   textStyle: {fontSize: 22},
               },
               tooltip: {
@@ -2173,7 +2212,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['印日\n举行\n首次\n部长级\n"2+2"\n对话\n双方\n讨论\n南海\n问题'].join(""),
                                   }
@@ -2186,7 +2225,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['越南\n阻拦\n失败，\n经过\n数月\n努力后，\n中国\n海警\n已在\n万安滩\n常态化\n巡逻 '].join(""),
                                   }
@@ -2200,7 +2239,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['外网评：\n加速\n“南海\n行为\n准则”\n磋商，\n中国\n和东盟\n做了\n哪些\n工作？'].join(""),
                                   }
@@ -2215,7 +2254,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['越南\n在南海\n建岛，\n投入\n美国\n怀抱后，\n更需\n警惕\n双方\n狼狈\n为奸'].join(""),
                                   }
@@ -2228,7 +2267,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['令美国\n失望了！\n中越\n海军\n在南海\n相遇，\n实力\n差距\n明显！\n没掐\n起来'].join(""),
                                   }
@@ -2242,7 +2281,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['令美国失望了！中越海军在南海相遇，实力差距明显！没掐起来 '].join(""),
                                   }
@@ -2282,8 +2321,8 @@ const ChartLib = {
     option: {
               title: {
                   text: '台湾大选',
-                  top: '12%',
-                  left: '43%',
+                  top: '6%',
+                  left: '70%',
                   textStyle: {fontSize: 22},
               },
               tooltip: {
@@ -2338,7 +2377,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['蔡英文\n宣称\n年内\n完成\n“反渗透法”,\n马英九\n斥：\n制造\n恐惧\n骗选票，\n其心\n可诛'].join(""),
                                   }
@@ -2351,7 +2390,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['蓝绿\n决战\n“中彰投”，\n没想到\n民进党\n竟用\n一招\n“独领风骚”？'].join(""),
                                   }
@@ -2365,7 +2404,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['来去\n蔡办\n住一晚？\n蔡英文\n用办公室\n拉选票\n被批：\n台湾\n不是\n你家'].join(""),
                                   }
@@ -2380,7 +2419,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['港媒：\n台湾\n选情\n诡异，\n三个\n现象\n异于\n过往'].join(""),
                                   }
@@ -2393,7 +2432,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['马英九\n痛批：\n蔡英文\n用香港人\n的鲜血\n骗台湾\n选票'].join(""),
                                   }
@@ -2407,7 +2446,7 @@ const ChartLib = {
                               label: {
                                   normal: {
                                       padding: [5, 10, 10, 10],
-                                      fontSize: 17,
+                                      fontSize: 10,
                                       color: "yellow",
                                       formatter: ['台湾\n2020\n选举\n有漏洞！\n台"中选会"\n擅改\n规则\n空白\n选票\n恐成\n输赢\n关键'].join(""),
                                   }
@@ -2442,6 +2481,156 @@ const ChartLib = {
                   }
               }, ]
   }
+  },
+  '南海气泡图': {
+  option: {
+      backgroundColor: '',
+      color: [
+          '#dd4444', '#fec42c', '#80F1BE', '#dd4444', '#fec42c', '#80F1BE'
+      ],
+      legend: {
+          top: 10,
+          data: ["入侵行动", "国家立场", "防卫行动", "军演行动", "媒体评论", "访问行动"],
+          textStyle: {
+              color: '#fff',
+              fontSize: 16
+          }
+      },
+      grid: {
+          left: '12%',
+          right: 100,
+          top: '18%',
+          bottom: '10%'
+      },
+      tooltip: {
+          padding: 10,
+          backgroundColor: '#222',
+          borderColor: '#777',
+          borderWidth: 1,
+          formatter: function (obj) {
+              var value = obj.value;
+              return '<div style="border-bottom: 1px solid rgba(255,255,255,.3);font-size: 14px;padding-bottom: 1px;margin-bottom: 1px">' + '新闻：' + value[7] + '</div>' + schema[1].text + '：' + value[1] + '<br>' + schema[2].text + '：' + value[2] + '<br>';
+          }
+      },
+      xAxis: {
+          type: 'value',
+          name: '发生日期',
+          nameGap: 16,
+          nameTextStyle: {
+              color: '#fff',
+              fontSize: 14
+          },
+          max: 31,
+          splitLine: {
+              show: false
+          },
+          axisLine: {
+              lineStyle: {
+                  color: '#eee'
+              }
+          }
+      },
+      yAxis: {
+          type: 'value',
+          name: '影响力指数',
+          nameLocation: 'end',
+          nameGap: 20,
+          nameTextStyle: {
+              color: '#fff',
+              fontSize: 16
+          },
+          max: 100,
+          axisLine: {
+              lineStyle: {
+                  color: '#eee'
+              }
+          },
+          splitLine: {
+              show: false
+          }
+      },
+      // visualMap: [
+      //     {
+      //         left: 'right',
+      //         top: '10%',
+      //         dimension: 2,
+      //         min: 0,
+      //         max: 250,
+      //         itemWidth: 30,
+      //         itemHeight: 120,
+      //         calculable: true,
+      //         precision: 0.1,
+      //         text: ['圆形大小：PM2.5'],
+      //         textGap: 30,
+      //         textStyle: {
+      //             color: '#fff'
+      //         },
+      //         inRange: {
+      //             symbolSize: [10, 70]
+      //         },
+      //         outOfRange: {
+      //             symbolSize: [10, 70],
+      //             color: ['rgba(255,255,255,.2)']
+      //         },
+      //         controller: {
+      //             inRange: {
+      //                 color: ['#c23531']
+      //             },
+      //             outOfRange: {
+      //                 color: ['#444']
+      //             }
+      //         }
+      //     },
+      //     {
+      //         left: 'right',
+      //         bottom: '5%',
+      //         dimension: 6,
+      //         min: 0,
+      //         max: 50,
+      //         itemHeight: 120,
+      //         precision: 0.1,
+      //         text: ['明暗：二氧化硫'],
+      //         textGap: 30,
+      //         textStyle: {
+      //             color: '#fff'
+      //         },
+      //         inRange: {
+      //             colorLightness: [1, 0.5]
+      //         },
+      //         outOfRange: {
+      //             color: ['rgba(255,255,255,.2)']
+      //         },
+      //         controller: {
+      //             inRange: {
+      //                 color: ['#c23531']
+      //             },
+      //             outOfRange: {
+      //                 color: ['#444']
+      //             }
+      //         }
+      //     }
+      // ],
+      series: [
+          {
+              name: '入侵行动',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataBJ
+          },
+          {
+              name: '国家立场',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataSH
+          },
+          {
+              name: '防卫行动',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataGZ
+          }
+      ]
+    }
   }
 };
 export {fish_data, fishBone, ChartLib, ChartData};

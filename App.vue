@@ -3,7 +3,9 @@
     <div :href="'/' + jumpto" class="con-box l-t-box">
       <!-- <Echarts theme="ring" :option="options.left_up.option" className="chart" ></Echarts> -->
       <center>
-        <font size="7" color="white">综合选题</font>
+        <a :href="'http://localhost:8092'">
+          <font size="7" color="red">综合选题</font>
+        </a>
       </center>
       <ul>
         <font size="5" color="white">

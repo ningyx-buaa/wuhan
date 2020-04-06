@@ -3,23 +3,19 @@
     <div :href="'/' + jumpto" class="con-box l-t-box">
       <!-- <Echarts theme="ring" :option="options.left_up.option" className="chart" ></Echarts> -->
       <center>
-        <a :href="'http://localhost:8092'">
-          <font size="6" color="white">综合选题</font>
+        <a :href="'http://baidu.com'">
+          <font size="7" color="red">综合选题</font>
         </a>
       </center>
       <ul>
-        <font size="3" color="white">
+        <font size="5" color="white">
           <table border="" cellspacing="" cellpadding="" >
-            <tr v-bind:key=v v-for="v in left_up_list" @click="clicking(v.index)">
-                <!-- <td width=50px>{{v.index}}</td> -->
-                <td width=50px>{{v.topic}}</td>
-                <td width=100px>{{v.date}}</td>
-                <a :href="v.link">
-                  <font size="3" color="white">
-                    <!-- <span class="icon">{{item.hashName | ellipsis}}</span> -->
-                    <td> {{v.text | ellipsis}}</td>
-                  </font>
-                </a>
+            <tr v-bind:key=v v-for="v in left_up_list" @click="clicking(v.topic)">
+              <a :href="v.link">
+                <td width=50px>{{v.index}}</td>
+              </a>
+                <td width=70px>{{v.topic}}</td>
+                <td>{{v.date}} {{v.text}}</td>
             </tr>
           </table> 
         </font>
@@ -28,35 +24,23 @@
     <div class="con-box r-t-box" @click="goto">
       <!-- <Echarts theme="ring" :option="options.right_up.option" className="chart" ></Echarts> -->
       <center>
-        <a :href="'http://localhost:8094'">
-          <font size="6" color="white">专家观点</font>
-        </a>
+        <font size="7" color="white">专家观点</font>
       </center>
       <ul>
-        <font size="3" color="white">
-          <table border="" cellspacing="" cellpadding="" >
-            <tr v-bind:key=tab v-for="tab in right_up_list">
-              <a :href="tab.url">
-                <td width=100px><font size="3" color="white">{{tab.user| ellipsisname}}</font></td>
-                <font size="3" color="white">{{tab.point| ellipsis}}</font>
-              </a>
-            </tr>
-          </table>
-        </font>
+          <li v-bind:key=tab v-for="tab in right_up_list">
+            <font size="5" color="white">{{tab}}</font>
+          </li>
       </ul>
     </div>
     <div class="con-box l-b-box" @click="goto">
       <center>
-        <font size="6" color="white">热度趋势</font>
+        <font size="7" color="white">热度趋势</font>
       </center>
-      <!-- <font size="3" color="white">{{Data.}}</font> -->
       <Echarts theme="ring" :option="options.left_down.option" className="chart" ></Echarts>
     </div>
     <div class="con-box r-b-box" @click="goto">
       <center>
-        <a :href="'http://localhost:8093'">
-          <font size="6" color="white">事件分析</font>
-        </a>
+        <font size="7" color="white">事件演化</font>
       </center>
       <div class="chart">
         <Echarts theme="ring" :option="options.right_down.option" className="chart" ></Echarts>
@@ -76,10 +60,9 @@
 
 <script type="text/ecmascript-6">
   import 'components/charts/theme/Ring.js'
-  import Data from "../assets/data/data.json"
   import Echarts from 'vue-echarts-v3/src/full.js'
   // import "yugu/js/jquery-1.8.0.min.js"
-  // import {fishBone} from "yugu/js/fishBone.js"
+  // import "yugu/js/fishBone.js"
   // import "yugu/js/jquery.SuperSlide.2.1.1.js"
   import echarts from 'echarts'
   require('echarts-gl');
@@ -88,7 +71,7 @@
 
   import Common from 'components/Common.js'
 
-  import {fish_data, fishBone, ChartLib, ChartData} from './ChartLib.js'
+  import {ChartLib, ChartData} from './ChartLib.js'
 
   import BaseTexture from 'components/texture/Base.js'
   // import HeightTexture from 'components/texture/Height.js'
@@ -130,14 +113,13 @@
       return {
         Common: Common,
         jumpto: "",
-        topic: 1,
-        topics: [1,2,3],
+        topic: '朝鲜',
+        topics: ['朝鲜','南海','台湾'],
         topic_index: 0,
         intervalID: null,
         intervalRotate: null,
         region: null,
         regions: null,
-        result: null,
         nowCityIndex: 0,
         rotateCities: [],
         left_up_list: [],
@@ -315,16 +297,11 @@
       }
     },
     mounted () {
-      console.log('ningyx');
       this.echartsGlobe();
-      console.log(Data);
-      this.result = Data;
-      this.getGoodsList();
-      console.log(this.result);
-      this.left_up_list = Data.topics // ChartData['topics'];
-      this.right_up_list = Data.exports[this.topic] // ChartData['exports'][this.topic];
-      this.options.right_down.option = ChartLib['南海气泡图'].option;
-      this.options.left_down.option = ChartLib['折线图南海'].option;
+      this.left_up_list = ChartData['topics'];
+      this.right_up_list = ChartData['exports'][this.topic];
+      this.options.right_down.option = ChartLib['河流图'].option;
+      this.options.left_down.option = ChartLib['折线图' + this.topic].option;
     },
     created () {
       this.initOptions();
@@ -365,31 +342,9 @@
         // let timer = setTimeout(function () { location.href = '../' + response.data.page1.to; } , response.data.page1.delay * 1000);
       });
     },
-    filters: {
-      ellipsis (value) {
-        if (!value) return ''
-        if (value.length > 16) {
-          return value.slice(0,16) + '...'
-        }
-        return value
-      },
-      ellipsisname (value) {
-        if (!value) return ''
-        if (value.length > 5) {
-          return value.slice(0,5) + '...'
-        }
-        return value
-      }
-    },
     methods: {
       goto: function () {
         // document.location.href = Common.addr + Common.page1;
-      },
-      getGoodsList () {
-            axios.get('/goods').then((res) => {
-              this.result = res.data
-              console.log(this.result)
-            })
       },
       initOptions: function () {
         axios.get('/api/getShowCharts').then(response => {
@@ -404,15 +359,13 @@
       },
       clicking: function (term) {
         this.topic = term;
-        this.right_up_list = Data.exports[this.topic] // ChartData['exports'][this.topic];
-        this.topic = '南海'
+        this.right_up_list = ChartData['exports'][this.topic];
         this.options.left_down.option = ChartLib['折线图' + this.topic].option;
-        // this.options.right_down.option = ChartLib['事件演化' + this.topic].option;
         this.around(41);
       },
       findcountry: function (country) {
         var o;
-        // console.log(country);
+        console.log(country);
         for (o in this.regions) {
           if (o.name === country) {
             return o;
@@ -505,12 +458,12 @@
         this.regions = mapChart.getModel().getComponent('geo').coordinateSystem.regions;
         var geo;
         geo = mapChart.getModel().getComponent('geo').coordinateSystem;
-        // console.log("---------------------------------");
-        // console.log(this.regions);
-        // console.log(geo.getRegion('China'));
-        // console.log(geo.getRegion('Dem.Rep.korea'));
-        // console.log(geo.getRegion('朝鲜'));
-        // console.log(this.findcountry("Dem.Rep.korea"));
+        console.log("---------------------------------");
+        console.log(this.regions);
+        console.log(geo.getRegion('China'));
+        console.log(geo.getRegion('Dem.Rep.korea'));
+        console.log(geo.getRegion('朝鲜'));
+        console.log(this.findcountry("Dem.Rep.korea"));
       },
       around (index) {
         // this.region = this.regions[Math.round(Math.random() * (this.regions.length - 1))];
@@ -611,24 +564,23 @@
     position: absolute
     width: 37%
     height: 45%
-    overflow: scroll
     padding: .7rem 1rem .8rem
     background-image: url("~assets/images/box-bg.png")
     background-size: 100% 100%
     z-index: 1000
     cursor: pointer
     &.l-t-box
-      left: 1.5rem
-      top: 1.2rem
+      left: 2.5rem
+      top: 2.5rem
     &.r-t-box
-      right: 1.5rem
-      top: 1.2rem
+      right: 2.5rem
+      top: 2.5rem
     &.l-b-box
-      left: 1.5rem
-      bottom: 1.2rem
+      left: 2.5rem
+      bottom: 2.5rem
     &.r-b-box
-      right: 1.5rem
-      bottom: 1.2rem
+      right: 2.5rem
+      bottom: 2.5rem
       .chart
         bottom: 100rem
         width: 100%
